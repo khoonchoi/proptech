@@ -17,18 +17,18 @@ async function main() {
         }
 
         // Identity to credentials to be stored in the wallet
-        const credPath = path.join(__dirname, "msp");
+        const credPath = path.join(__dirname, "..", "network","organizations","peerOrganizations");
         const certificate = fs
             .readFileSync(
                 path.join(
                     credPath,
-                    "/org1.example.com/users/signcerts/User1@org1.example.com-cert.pem"
+                    "/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem"
                 )
             )
             .toString();
         const privateKey = fs
             .readFileSync(
-                path.join(credPath, "/org1.example.com/users/keystore/priv_sk")
+                path.join(credPath, "/org1.example.com/users/User1@org1.example.com/msp/keystore/priv_sk")
             )
             .toString();
 

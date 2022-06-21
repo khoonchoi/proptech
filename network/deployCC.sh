@@ -19,7 +19,7 @@ export FABRIC_CFG_PATH=${PWD}/config
 
 # Chaincode config variable
 
-CC_NAME="teamate"
+CC_NAME="proptech"
 CC_SRC_PATH="./../contract"
 CC_RUNTIME_LANGUAGE="golang"
 CC_VERSION="1"
@@ -157,7 +157,7 @@ peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name ${CC_NA
 ## TEST1 : Invoking the chaincode
 infoln "TEST1 : Invoking the chaincode"
 set -x
-peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"function":"addUser","Args":["abc@gmail.com"]}' >&log.txt
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"function":"Register","Args":["P10001","1000000"]}' >&log.txt
 { set +x; } 2>/dev/null
 cat log.txt
 sleep 3
@@ -165,22 +165,22 @@ sleep 3
 ## TEST2 : Invoking the chaincode
 infoln "TEST2 : Invoking the chaincode"
 set -x
-peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"function":"addRating","Args":["abc@gmail.com","myproj","300"]}' >&log.txt
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"function":"Open","Args":["P10001","500"]}' >&log.txt
 { set +x; } 2>/dev/null
 cat log.txt
 sleep 3
 
-## TEST3 : Invoking the chaincode
-infoln "TEST3 : Invoking the chaincode"
+## TEST3 : Query the chaincode
+infoln "TEST3 : Query the chaincode"
 set -x
-peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"function":"addRating","Args":["abc@gmail.com","myproj2","500"]}' >&log.txt
+peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"function":"Query","Args":["P10001"]}' >&log.txt
 { set +x; } 2>/dev/null
 cat log.txt
-sleep 3
+
 
 ## TEST4 : Query the chaincode
 infoln "TEST4 : Query the chaincode"
 set -x
-peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"function":"readRating","Args":["abc@gmail.com"]}' >&log.txt
+peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"function":"History","Args":["P10001"]}' >&log.txt
 { set +x; } 2>/dev/null
 cat log.txt

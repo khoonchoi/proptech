@@ -55,12 +55,12 @@ async function cc_call(fn_name, args) {
     var result;
 
     if (fn_name == "Register") {
-
-        result = await contract.submitTransaction("addUser", args[0], args[1]);
+        result = await contract.submitTransaction("Register", args[0], args[1]);
     } else if (fn_name == "Open") {
-        result = await contract.submitTransaction("addRating", args[0], args[1]);
-    } else if (fn_name == "Query")
-        result = await contract.evaluateTransaction("readRating", args[0]);
+        result = await contract.submitTransaction("Open", args[0], args[1]);
+    } else if (fn_name == "Query") {
+        result = await contract.evaluateTransaction("Query", args[0]);
+    }
     else result = "not supported function";
 
     return result;
@@ -92,10 +92,10 @@ app.post("/sale", async (req, res) => {
 
 // find mate
 app.get("/property", async (req, res) => {
-    const pid = req.param.pid;
+    const pid = req.query.pid;
     console.log("query pid: " + pid);
 
-    result = await cc_call("Query", pid);
+    result = await cc_call("Query", [pid]);
     console.log("result: " + result.toString());
     const myobj = JSON.parse(result, "utf8");
 

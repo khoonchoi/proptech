@@ -141,7 +141,8 @@
         const pid = $("#find-id").val();
         const url = "/property"
 
-        console.log("get, /mate",value, url);
+        console.log("get, /property",pid, url);
+        
         $.get(url, { pid }, (data) => {
             console.log("returned", data);
 
